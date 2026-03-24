@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
   test_and_deploy:
@@ -30,19 +27,8 @@ jobs:
       - name: Build Next.js Application
         run: npm run build
 
-      - name: Deploy to Firebase Hosting (Preview URL)
+      - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
-        if: github.event_name == 'pull_request'
-        with:
-          repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_ENERGY_LAW_ASSOCIATION_INDIA }}
-          projectId: energy-law-association-india
-        env:
-          FIREBASE_CLI_EXPERIMENTS: webframeworks
-
-      - name: Deploy to Firebase Hosting (Live)
-        uses: FirebaseExtended/action-hosting-deploy@v0
-        if: github.event_name == 'push'
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_ENERGY_LAW_ASSOCIATION_INDIA }}
