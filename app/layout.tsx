@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
-import { Oswald, Playfair_Display } from "next/font/google";
+import { Newsreader, Manrope } from "next/font/google";
 import "./globals.css";
 
-const oswald = Oswald({
-  variable: "--font-oswald",
+const newsreader = Newsreader({
+  variable: "--font-newsreader",
   subsets: ["latin"],
 });
 
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
+const manrope = Manrope({
+  variable: "--font-manrope",
   subsets: ["latin"],
 });
 
@@ -16,6 +16,8 @@ export const metadata: Metadata = {
   title: "India Energy Law Association | Navigating the Future of Energy Law",
   description: "Empowering India's energy transition through legal excellence.",
 };
+
+import Navbar from "./components/Navbar";
 
 export default function RootLayout({
   children,
@@ -25,9 +27,12 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${oswald.variable} ${playfair.variable} h-full antialiased`}
+      className={`${newsreader.variable} ${manrope.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <Navbar />
+        {children}
+      </body>
     </html>
   );
 }

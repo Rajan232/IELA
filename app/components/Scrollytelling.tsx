@@ -10,6 +10,7 @@ export default function Scrollytelling() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [images, setImages] = useState<HTMLImageElement[]>([]);
   const [imagesLoaded, setImagesLoaded] = useState(0);
+  const [isIdle, setIsIdle] = useState(false);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -17,8 +18,10 @@ export default function Scrollytelling() {
   });
 
   const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
+    stiffness: 40,  // Lower stiffness = more delay/lag
+    damping: 25,    // Smooth out the deceleration
+    mass: 1.5,      // Higher mass creates heavier, luxurious momentum
+    restDelta: 0.0001
   });
 
   // Preload images
@@ -123,6 +126,30 @@ export default function Scrollytelling() {
     };
   }, [images, smoothProgress, isLoading]);
 
+  // Idle detection for 'Scroll to Explore' emphasis
+  useEffect(() => {
+    if (isLoading) return;
+    
+    let timeout: NodeJS.Timeout;
+    const resetTimer = () => {
+      setIsIdle(false);
+      clearTimeout(timeout);
+      // Only set idle state if they are at the very top of the page
+      if (scrollYProgress.get() < 0.01) {
+        // emphasis triggers after 15 seconds of no activity (reduced from 1 min for better UX)
+        timeout = setTimeout(() => setIsIdle(true), 15000); 
+      }
+    };
+
+    resetTimer(); // initial start
+    const unsubscribe = scrollYProgress.on("change", resetTimer);
+
+    return () => {
+      clearTimeout(timeout);
+      unsubscribe();
+    };
+  }, [isLoading, scrollYProgress]);
+
   return (
     <>
       {isLoading && (
@@ -154,19 +181,31 @@ export default function Scrollytelling() {
       <div ref={containerRef} className="relative h-[400vh] w-full bg-white">
         {/* Scroll indicator - Fades out by 10% */}
         <motion.div 
-          className="fixed top-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2 pointer-events-none"
+          className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2 pointer-events-none"
           style={{
             opacity: useTransform(smoothProgress, [0, 0.05, 0.1], [1, 1, 0])
           }}
         >
-          <span className="text-xs font-sans uppercase tracking-[0.2em] text-[var(--color-headings)]">Scroll to Explore</span>
-          <div className="w-[1px] h-8 bg-[var(--color-brand-primary)]/50 relative overflow-hidden">
-            <motion.div 
-              className="w-full h-1/2 bg-[var(--color-brand-primary)] absolute top-0"
-              animate={{ top: ['-50%', '100%'] }}
-              transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
-            />
-          </div>
+          <motion.div
+            className="flex flex-col items-center gap-2"
+            animate={isIdle ? { 
+               y: [0, 8, 0],
+               filter: ["drop-shadow(0px 0px 0px rgba(34,139,34,0))", "drop-shadow(0px 4px 12px rgba(34,139,34,0.6))", "drop-shadow(0px 0px 0px rgba(34,139,34,0))"]
+            } : { 
+               y: 0,
+               filter: "drop-shadow(0px 0px 0px rgba(34,139,34,0))"
+            }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <span className="text-xs font-sans uppercase tracking-[0.2em] text-[var(--color-headings)]">Scroll to Explore</span>
+            <div className="w-[1px] h-8 bg-[var(--color-brand-primary)]/50 relative overflow-hidden">
+              <motion.div 
+                className="w-full h-1/2 bg-[var(--color-brand-primary)] absolute top-0"
+                animate={{ top: ['-50%', '100%'] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
+              />
+            </div>
+          </motion.div>
         </motion.div>
 
         <div className="sticky top-0 h-screen w-full overflow-hidden">
@@ -178,10 +217,10 @@ export default function Scrollytelling() {
             range={[0, 0.05, 0.15, 0.2]}
             className="items-center text-center justify-center p-8"
           >
-            <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold font-sans uppercase tracking-tight text-[var(--color-headings)] leading-none mb-6 max-w-7xl drop-shadow-[0_0_20px_rgba(255,255,255,0.8)]">
+            <h1 className="text-6xl md:text-8xl lg:text-9xl font-normal font-serif uppercase tracking-tight text-[var(--color-headings)] leading-none mb-6 max-w-7xl drop-shadow-[0_0_20px_rgba(255,255,255,0.8)]">
               Navigating the Future of Energy Law
             </h1>
-            <p className="text-2xl md:text-3xl font-serif text-[var(--color-foreground)] max-w-3xl drop-shadow-[0_0_10px_rgba(255,255,255,0.9)]">
+            <p className="text-2xl md:text-3xl font-sans text-[var(--color-foreground)] max-w-3xl drop-shadow-[0_0_10px_rgba(255,255,255,0.9)]">
               Empowering India's energy transition through legal excellence.
             </p>
           </BeatOverlay>
@@ -192,10 +231,10 @@ export default function Scrollytelling() {
             range={[0.25, 0.3, 0.4, 0.45]}
             className="items-start text-left justify-center pl-[5%] md:pl-[10%] p-8"
           >
-            <h2 className="text-6xl md:text-8xl lg:text-9xl font-bold font-sans uppercase tracking-tight text-[var(--color-headings)] leading-none mb-6 max-w-5xl drop-shadow-[0_0_20px_rgba(255,255,255,0.8)]">
+            <h2 className="text-6xl md:text-8xl lg:text-9xl font-normal font-serif uppercase tracking-tight text-[var(--color-headings)] leading-none mb-6 max-w-5xl drop-shadow-[0_0_20px_rgba(255,255,255,0.8)]">
               The Inner Circle
             </h2>
-            <p className="text-xl md:text-2xl font-serif text-[var(--color-foreground)] max-w-2xl drop-shadow-[0_0_10px_rgba(255,255,255,0.9)]">
+            <p className="text-xl md:text-2xl font-sans text-[var(--color-foreground)] max-w-2xl drop-shadow-[0_0_10px_rgba(255,255,255,0.9)]">
               A dynamic nexus for practitioners, policymakers, and industry stakeholders. Not just a network—an elite performance team.
             </p>
           </BeatOverlay>
@@ -206,10 +245,10 @@ export default function Scrollytelling() {
             range={[0.5, 0.55, 0.65, 0.7]}
             className="items-end text-right justify-center pr-[5%] md:pr-[10%] p-8"
           >
-            <h2 className="text-6xl md:text-8xl lg:text-9xl font-bold font-sans uppercase tracking-tight text-[var(--color-headings)] leading-none mb-6 max-w-5xl drop-shadow-[0_0_20px_rgba(255,255,255,0.8)]">
+            <h2 className="text-6xl md:text-8xl lg:text-9xl font-normal font-serif uppercase tracking-tight text-[var(--color-headings)] leading-none mb-6 max-w-5xl drop-shadow-[0_0_20px_rgba(255,255,255,0.8)]">
               Master the Transition
             </h2>
-            <p className="text-xl md:text-2xl font-serif text-[var(--color-foreground)] max-w-2xl drop-shadow-[0_0_10px_rgba(255,255,255,0.9)]">
+            <p className="text-xl md:text-2xl font-sans text-[var(--color-foreground)] max-w-2xl drop-shadow-[0_0_10px_rgba(255,255,255,0.9)]">
               Crafting legal pathways for decarbonisation, grid management, and emerging technologies.
             </p>
           </BeatOverlay>
@@ -220,10 +259,10 @@ export default function Scrollytelling() {
             range={[0.75, 0.8, 0.9, 0.95]}
             className="items-center text-center justify-center p-8"
           >
-            <h2 className="text-6xl md:text-8xl lg:text-9xl font-bold font-sans uppercase tracking-tight text-[var(--color-headings)] leading-none mb-6 max-w-5xl drop-shadow-[0_0_20px_rgba(255,255,255,0.8)]">
+            <h2 className="text-6xl md:text-8xl lg:text-9xl font-normal font-serif uppercase tracking-tight text-[var(--color-headings)] leading-none mb-6 max-w-5xl drop-shadow-[0_0_20px_rgba(255,255,255,0.8)]">
               Our Manifesto
             </h2>
-            <p className="text-xl md:text-2xl font-serif text-[var(--color-foreground)] max-w-2xl mb-12 drop-shadow-[0_0_10px_rgba(255,255,255,0.9)]">
+            <p className="text-xl md:text-2xl font-sans text-[var(--color-foreground)] max-w-2xl mb-12 drop-shadow-[0_0_10px_rgba(255,255,255,0.9)]">
               Become part of the platform actively defining the future.
             </p>
             

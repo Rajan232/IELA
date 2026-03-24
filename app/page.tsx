@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import Image from "next/image";
 
 const Scrollytelling = dynamic(() => import("./components/Scrollytelling"), { ssr: false });
 
@@ -26,10 +27,16 @@ export default function Home() {
           ))}
         </div>
 
-        <h3 className="text-4xl md:text-6xl font-sans font-bold uppercase tracking-tight text-[var(--color-headings)] mb-4">
-          India-ELA
-        </h3>
-        <p className="text-lg font-serif text-[var(--color-foreground)] max-w-md text-center">
+        <div className="relative w-72 md:w-96 h-32 md:h-40 mb-8 pointer-events-none">
+          <Image 
+            src="/logo/logo.png" 
+            alt="India Energy Law Association Logo" 
+            fill
+            className="object-contain"
+          />
+        </div>
+
+        <p className="text-lg font-sans text-[var(--color-foreground)] max-w-md text-center">
           Empowering India's energy transition through legal excellence.
         </p>
         <p className="mt-12 text-sm font-sans tracking-widest uppercase text-gray-400">
