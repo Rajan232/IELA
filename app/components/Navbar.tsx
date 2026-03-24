@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 
 const navItems = [
   { name: "Home", path: "/" },
@@ -18,7 +19,21 @@ export default function Navbar() {
   const activeIndex = hoveredIndex !== null ? hoveredIndex : 0;
 
   return (
-    <div className="fixed top-8 w-full z-[100] pointer-events-none flex justify-center px-4">
+    <div className="fixed top-8 w-full z-[100] pointer-events-none flex justify-center px-4 md:px-8">
+      {/* Logo */}
+      <div className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 pointer-events-auto">
+        <Link href="/">
+          <Image 
+            src="/logo/logo.png" 
+            alt="India Energy Law Association Logo" 
+            width={120} 
+            height={48} 
+            className="object-contain w-24 md:w-32 h-auto"
+            unoptimized={true}
+          />
+        </Link>
+      </div>
+
       <nav 
         className="pointer-events-auto flex items-center bg-white p-2 rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.08)] gap-2"
         onMouseLeave={() => setHoveredIndex(null)}
