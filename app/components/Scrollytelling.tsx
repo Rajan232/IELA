@@ -44,8 +44,13 @@ export default function Scrollytelling() {
     setImages(loadedImages);
   }, []);
 
+  const isLoading = imagesLoaded < FRAME_COUNT + 1;
+  const progressPerc = Math.round((imagesLoaded / (FRAME_COUNT + 1)) * 100);
+
   // Draw frame on canvas
   useEffect(() => {
+    if (isLoading) return; // Wait until all images are fully loaded and loader vanishes
+
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -110,34 +115,43 @@ export default function Scrollytelling() {
     };
     
     window.addEventListener("resize", handleResize);
-    handleResize(); // Initial setup
+    handleResize(); // Initial setup draws the highly-anticipated frame 0 instantly!
     
     return () => {
       unsubscribe();
       window.removeEventListener("resize", handleResize);
     };
-  }, [images, smoothProgress]);
-
-  const isLoading = imagesLoaded < FRAME_COUNT + 1;
-  const progressPerc = Math.round((imagesLoaded / (FRAME_COUNT + 1)) * 100);
+  }, [images, smoothProgress, isLoading]);
 
   return (
     <>
       {isLoading && (
-        <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-white">
-          <div className="w-64 h-2 bg-gray-200 rounded overflow-hidden">
-            <div 
-              className="h-full bg-[var(--color-brand-primary)] transition-all duration-300"
-              style={{ width: `${progressPerc}%` }}
-            />
+        <div className="loader">
+          <div className="loader-inner">
+            <div className="loader-line-wrap">
+              <div className="loader-line"></div>
+            </div>
+            <div className="loader-line-wrap">
+              <div className="loader-line"></div>
+            </div>
+            <div className="loader-line-wrap">
+              <div className="loader-line"></div>
+            </div>
+            <div className="loader-line-wrap">
+              <div className="loader-line"></div>
+            </div>
+            <div className="loader-line-wrap">
+              <div className="loader-line"></div>
+            </div>
           </div>
-          <p className="mt-4 text-[var(--color-headings)] font-sans uppercase tracking-widest text-sm">
+          <p className="absolute bottom-1/4 left-0 right-0 text-center text-[var(--color-headings)] font-sans uppercase tracking-widest text-sm z-10">
             Loading Elite Performance ({progressPerc}%)
           </p>
         </div>
       )}
 
-      <div ref={containerRef} className="relative h-[400vh] w-full bg-white" style={{ display: isLoading ? 'none' : 'block' }}>
+      {/* Removing display logic ensures container is properly tracked by Framer Motion from start, eliminating the warning */}
+      <div ref={containerRef} className="relative h-[400vh] w-full bg-white">
         {/* Scroll indicator - Fades out by 10% */}
         <motion.div 
           className="fixed top-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2 pointer-events-none"
