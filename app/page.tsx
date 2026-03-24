@@ -1,11 +1,14 @@
 "use client";
 
+import { useState } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 
 const Scrollytelling = dynamic(() => import("./components/Scrollytelling"), { ssr: false });
 
 export default function Home() {
+  const [activeAccordion, setActiveAccordion] = useState<number | null>(null);
+
   return (
     <main className="min-h-screen bg-white selection:bg-[var(--color-brand-primary)] selection:text-white">
       {/* 
@@ -82,14 +85,23 @@ export default function Home() {
             ].map((member, i) => (
               <div 
                 key={i} 
-                className="group relative flex-1 h-full bg-center bg-cover bg-no-repeat transition-[flex] duration-[800ms] ease-out hover:flex-[7] overflow-hidden cursor-pointer rounded-2xl shadow-lg grayscale hover:grayscale-0"
+                onClick={() => setActiveAccordion(activeAccordion === i ? null : i)}
+                className={`group relative h-full bg-center bg-cover bg-no-repeat transition-[flex,filter] duration-[800ms] ease-out overflow-hidden cursor-pointer rounded-2xl shadow-lg 
+                  flex-1 md:hover:flex-[7] md:grayscale md:hover:grayscale-0
+                  ${activeAccordion === i ? 'max-md:flex-[7] max-md:grayscale-0' : 'max-md:flex-1 max-md:grayscale'}
+                `}
                 style={{ backgroundImage: `url('${member.image}')` }}
               >
                 {/* Gradient overlay for text readability */}
-                <div className="absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-black via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                <div className={`absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-black via-black/50 to-transparent transition-opacity duration-700
+                  md:opacity-0 md:group-hover:opacity-100 ${activeAccordion === i ? 'max-md:opacity-100' : 'max-md:opacity-0'}
+                `}></div>
                 
                 {/* Text Content */}
-                <div className="absolute bottom-8 left-8 right-8 opacity-0 translate-y-8 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-700 delay-150 flex flex-col">
+                <div className={`absolute bottom-8 left-8 right-8 transition-all duration-700 delay-150 flex flex-col
+                  md:opacity-0 md:translate-y-8 md:group-hover:opacity-100 md:group-hover:translate-y-0
+                  ${activeAccordion === i ? 'max-md:opacity-100 max-md:translate-y-0' : 'max-md:opacity-0 max-md:translate-y-8'}
+                `}>
                   <h4 className="text-3xl md:text-5xl font-serif font-medium !text-white mb-2 truncate">{member.name}</h4>
                   <p className="text-xs md:text-sm font-sans uppercase tracking-[0.2em] text-[#8FBC8F] truncate">{member.role}</p>
                 </div>
