@@ -33,6 +33,7 @@ export default function Home() {
             alt="India Energy Law Association Logo" 
             fill
             className="object-contain"
+            unoptimized
           />
         </div>
 
