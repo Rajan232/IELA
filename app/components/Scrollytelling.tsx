@@ -218,10 +218,10 @@ export default function Scrollytelling() {
             className="items-center text-center justify-center p-8"
           >
             <h1 className="text-6xl md:text-8xl lg:text-9xl font-normal font-serif uppercase tracking-tight text-[var(--color-headings)] leading-none mb-6 max-w-7xl drop-shadow-[0_0_20px_rgba(255,255,255,0.8)]">
-              Navigating the Future of Energy Law
+              Advancing Energy Law
             </h1>
             <p className="text-2xl md:text-3xl font-sans text-[var(--color-foreground)] max-w-3xl drop-shadow-[0_0_10px_rgba(255,255,255,0.9)]">
-              Empowering India's energy transition through legal excellence.
+              India's energy sector is at the forefront of a transformative journey. We foster the legal ecosystem to support this transition.
             </p>
           </BeatOverlay>
 
@@ -235,7 +235,7 @@ export default function Scrollytelling() {
               The Inner Circle
             </h2>
             <p className="text-xl md:text-2xl font-sans text-[var(--color-foreground)] max-w-2xl drop-shadow-[0_0_10px_rgba(255,255,255,0.9)]">
-              A dynamic nexus for practitioners, policymakers, and industry stakeholders. Not just a network—an elite performance team.
+              Bridging the gaps between law, policy, markets, and technology for India's energy transition.
             </p>
           </BeatOverlay>
 
