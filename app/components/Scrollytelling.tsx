@@ -30,7 +30,6 @@ export default function Scrollytelling() {
     const loadedImages: HTMLImageElement[] = [];
     for (let i = 0; i <= FRAME_COUNT; i++) {
       const img = new Image();
-      // Using a fallback behavior for development when sequences are absent
       const frameString = String(i).padStart(3, '0');
       img.src = `/sequence/frame_${frameString}_delay-0.041s.jpg`;
       img.onload = () => {
@@ -38,7 +37,6 @@ export default function Scrollytelling() {
         setImagesLoaded(loaded);
       };
       img.onerror = () => {
-        // Just increment so loading resolves even if images fail to load
         loaded++;
         setImagesLoaded(loaded);
       };
@@ -52,7 +50,7 @@ export default function Scrollytelling() {
 
   // Draw frame on canvas
   useEffect(() => {
-    if (isLoading) return; // Wait until all images are fully loaded and loader vanishes
+    if (isLoading) return;
 
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -69,7 +67,6 @@ export default function Scrollytelling() {
       if (img && img.complete && img.naturalWidth !== 0) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         
-        // Calculate "contain" logic mathematically for canvas
         const hRatio = canvas.width / img.width;
         const vRatio = canvas.height / img.height;
         const ratio = Math.min(hRatio, vRatio);
@@ -77,7 +74,6 @@ export default function Scrollytelling() {
         const centerShiftX = (canvas.width - img.width * ratio) / 2;
         const centerShiftY = (canvas.height - img.height * ratio) / 2;
 
-        // Use #FFFFFF background as dictated
         ctx.fillStyle = "#FFFFFF";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -93,7 +89,6 @@ export default function Scrollytelling() {
           img.height * ratio
         );
       } else {
-        // Fallback for missing images (Dev only: draws a placeholder gradient or block)
         ctx.fillStyle = "#FFFFFF";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         
@@ -118,7 +113,7 @@ export default function Scrollytelling() {
     };
     
     window.addEventListener("resize", handleResize);
-    handleResize(); // Initial setup draws the highly-anticipated frame 0 instantly!
+    handleResize();
     
     return () => {
       unsubscribe();
@@ -126,7 +121,6 @@ export default function Scrollytelling() {
     };
   }, [images, smoothProgress, isLoading]);
 
-  // Idle detection for 'Scroll to Explore' emphasis
   useEffect(() => {
     if (isLoading) return;
     
@@ -134,14 +128,12 @@ export default function Scrollytelling() {
     const resetTimer = () => {
       setIsIdle(false);
       clearTimeout(timeout);
-      // Only set idle state if they are at the very top of the page
       if (scrollYProgress.get() < 0.01) {
-        // emphasis triggers after 15 seconds of no activity (reduced from 1 min for better UX)
         timeout = setTimeout(() => setIsIdle(true), 15000); 
       }
     };
 
-    resetTimer(); // initial start
+    resetTimer();
     const unsubscribe = scrollYProgress.on("change", resetTimer);
 
     return () => {
@@ -177,9 +169,7 @@ export default function Scrollytelling() {
         </div>
       )}
 
-      {/* Removing display logic ensures container is properly tracked by Framer Motion from start, eliminating the warning */}
       <div ref={containerRef} className="relative h-[400vh] w-full bg-white">
-        {/* Scroll indicator - Fades out by 10% */}
         <motion.div 
           className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2 pointer-events-none"
           style={{
@@ -217,12 +207,14 @@ export default function Scrollytelling() {
             range={[0, 0.05, 0.15, 0.2]}
             className="items-center text-center justify-center p-8"
           >
-            <h1 className="text-6xl md:text-8xl lg:text-9xl font-normal font-serif uppercase tracking-tight text-[var(--color-headings)] leading-none mb-6 max-w-7xl drop-shadow-[0_0_20px_rgba(255,255,255,0.8)]">
-              Advancing Energy Law
-            </h1>
-            <p className="text-2xl md:text-3xl font-sans text-[var(--color-foreground)] max-w-3xl drop-shadow-[0_0_10px_rgba(255,255,255,0.9)]">
-              India's energy sector is at the forefront of a transformative journey. We foster the legal ecosystem to support this transition.
-            </p>
+            <div className="bg-white/40 backdrop-blur-xl border border-white/50 rounded-[2.5rem] p-8 md:p-16 shadow-[0_8px_32px_rgba(0,0,0,0.1)] flex flex-col items-center">
+              <h1 className="text-5xl md:text-7xl lg:text-8xl font-normal font-serif uppercase tracking-tight text-[var(--color-headings)] leading-none mb-6 max-w-5xl">
+                Advancing Energy Law
+              </h1>
+              <p className="text-xl md:text-2xl font-sans text-[var(--color-foreground)] max-w-2xl">
+                India's energy sector is at the forefront of a transformative journey. We foster the legal ecosystem to support this transition.
+              </p>
+            </div>
           </BeatOverlay>
 
           {/* BEAT B: 25 - 45% */}
@@ -231,12 +223,14 @@ export default function Scrollytelling() {
             range={[0.25, 0.3, 0.4, 0.45]}
             className="items-start text-left justify-center pl-[5%] md:pl-[10%] p-8"
           >
-            <h2 className="text-6xl md:text-8xl lg:text-9xl font-normal font-serif uppercase tracking-tight text-[var(--color-headings)] leading-none mb-6 max-w-5xl drop-shadow-[0_0_20px_rgba(255,255,255,0.8)]">
-              The Inner Circle
-            </h2>
-            <p className="text-xl md:text-2xl font-sans text-[var(--color-foreground)] max-w-2xl drop-shadow-[0_0_10px_rgba(255,255,255,0.9)]">
-              Bridging the gaps between law, policy, markets, and technology for India's energy transition.
-            </p>
+            <div className="bg-white/40 backdrop-blur-xl border border-white/50 rounded-[2rem] p-8 md:p-14 shadow-[0_8px_32px_rgba(0,0,0,0.1)] flex flex-col items-start max-w-3xl">
+              <h2 className="text-5xl md:text-7xl lg:text-8xl font-normal font-serif uppercase tracking-tight text-[var(--color-headings)] leading-none mb-6">
+                The Inner Circle
+              </h2>
+              <p className="text-xl md:text-2xl font-sans text-[var(--color-foreground)]">
+                Bridging the gaps between law, policy, markets, and technology for India's energy transition.
+              </p>
+            </div>
           </BeatOverlay>
 
           {/* BEAT C: 50 - 70% */}
@@ -245,12 +239,14 @@ export default function Scrollytelling() {
             range={[0.5, 0.55, 0.65, 0.7]}
             className="items-end text-right justify-center pr-[5%] md:pr-[10%] p-8"
           >
-            <h2 className="text-6xl md:text-8xl lg:text-9xl font-normal font-serif uppercase tracking-tight text-[var(--color-headings)] leading-none mb-6 max-w-5xl drop-shadow-[0_0_20px_rgba(255,255,255,0.8)]">
-              Master the Transition
-            </h2>
-            <p className="text-xl md:text-2xl font-sans text-[var(--color-foreground)] max-w-2xl drop-shadow-[0_0_10px_rgba(255,255,255,0.9)]">
-              Crafting legal pathways for decarbonisation, grid management, and emerging technologies.
-            </p>
+            <div className="bg-white/40 backdrop-blur-xl border border-white/50 rounded-[2rem] p-8 md:p-14 shadow-[0_8px_32px_rgba(0,0,0,0.1)] flex flex-col items-end text-right max-w-3xl">
+              <h2 className="text-5xl md:text-7xl lg:text-8xl font-normal font-serif uppercase tracking-tight text-[var(--color-headings)] leading-none mb-6">
+                Master the Transition
+              </h2>
+              <p className="text-xl md:text-2xl font-sans text-[var(--color-foreground)]">
+                Crafting legal pathways for decarbonisation, grid management, and emerging technologies.
+              </p>
+            </div>
           </BeatOverlay>
 
           {/* BEAT D: 75 - 95% */}
@@ -259,25 +255,27 @@ export default function Scrollytelling() {
             range={[0.75, 0.8, 0.9, 0.95]}
             className="items-center text-center justify-center p-8"
           >
-            <h2 className="text-6xl md:text-8xl lg:text-9xl font-normal font-serif uppercase tracking-tight text-[var(--color-headings)] leading-none mb-6 max-w-5xl drop-shadow-[0_0_20px_rgba(255,255,255,0.8)]">
-              Our Manifesto
-            </h2>
-            <p className="text-xl md:text-2xl font-sans text-[var(--color-foreground)] max-w-2xl mb-12 drop-shadow-[0_0_10px_rgba(255,255,255,0.9)]">
-              Become part of the platform actively defining the future.
-            </p>
-            
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <a 
-                href="#take-the-lead"
-                className="group relative inline-flex items-center justify-center overflow-hidden rounded-full p-4 px-12 bg-[var(--color-brand-primary)] text-white font-sans uppercase tracking-widest text-lg md:text-xl shadow-[0_4px_30px_rgba(34,139,34,0.3)] transition-colors duration-300 hover:bg-[var(--color-brand-tertiary)]"
+            <div className="bg-white/40 backdrop-blur-xl border border-white/50 rounded-[2.5rem] p-12 md:p-20 shadow-[0_8px_32px_rgba(0,0,0,0.1)] flex flex-col items-center">
+              <h2 className="text-5xl md:text-7xl lg:text-8xl font-normal font-serif uppercase tracking-tight text-[var(--color-headings)] leading-none mb-6 max-w-5xl text-center">
+                Our Manifesto
+              </h2>
+              <p className="text-xl md:text-2xl font-sans text-[var(--color-foreground)] max-w-2xl mb-12 text-center">
+                Become part of the platform actively defining the future.
+              </p>
+              
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
-                <span className="relative z-10 transition-transform duration-300 group-hover:-translate-y-1">Take the Lead</span>
-                <div className="absolute inset-0 bg-[var(--color-brand-tertiary)] opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"></div>
-              </a>
-            </motion.div>
+                <a 
+                  href="#take-the-lead"
+                  className="group relative inline-flex items-center justify-center overflow-hidden rounded-full p-4 px-12 bg-[var(--color-brand-primary)] text-white font-sans uppercase tracking-widest text-lg md:text-xl shadow-[0_4px_30px_rgba(34,139,34,0.3)] transition-colors duration-300 hover:bg-[var(--color-brand-tertiary)]"
+                >
+                  <span className="relative z-10 transition-transform duration-300 group-hover:-translate-y-1">Take the Lead</span>
+                  <div className="absolute inset-0 bg-[var(--color-brand-tertiary)] opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"></div>
+                </a>
+              </motion.div>
+            </div>
           </BeatOverlay>
 
           {/* Architectural Grid Lines (Brutalist Minimalist) */}
@@ -309,7 +307,6 @@ function BeatOverlay({
 }) {
   const opacity = useTransform(progress, range, [0, 1, 1, 0]);
   const y = useTransform(progress, range, [40, 0, 0, -40]);
-  // Small optimization to avoid rendering full DOM elements when completely hidden
   const display = useTransform(progress, (p: number) => 
     p < range[0] - 0.05 || p > range[3] + 0.05 ? "none" : "flex"
   );
