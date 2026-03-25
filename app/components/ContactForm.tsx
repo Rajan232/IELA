@@ -20,13 +20,27 @@ export default function ContactForm() {
     e.preventDefault();
     setStatus("submitting");
     
+    // Web3Forms Public Access Key
+    // Note: User must get this key directly from web3forms.com by entering rajna.pusalkar51@gmail.com
+    const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_KEY;
+    
+    if (!accessKey) {
+      setStatus("error");
+      setErrorMessage("System Log: Missing NEXT_PUBLIC_WEB3FORMS_KEY in your deployment environment variables.");
+      return;
+    }
+
     try {
-      const response = await fetch("/api/contact", {
+      const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Accept: "application/json",
         },
         body: JSON.stringify({
+          access_key: accessKey,
+          subject: "New Contact Inquiry - India Energy Law Association",
+          from_name: formData.name,
           name: formData.name,
           email: formData.email,
           phone: formData.phone || "Not provided",
@@ -36,7 +50,7 @@ export default function ContactForm() {
 
       const result = await response.json();
       
-      if (result.success || response.ok) {
+      if (result.success) {
         setStatus("success");
         setFormData({ name: "", email: "", phone: "", message: "" });
       } else {
