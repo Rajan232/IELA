@@ -45,3 +45,10 @@ next-env.d.ts
 firebase-debug.log*
 firebase-debug.*.log*
 .firebaserc
+
+# Editor / AI Workspaces
+.cursor/
+.cursorrules
+.cline/
+.aider*
+.gemini/

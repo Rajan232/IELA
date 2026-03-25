@@ -1,0 +1,35 @@
+{
+  "id": "team",
+  "path": "team",
+  "name": "Team Members",
+  "singularName": "Team Member",
+  "properties": {
+    "name": {
+      "dataType": "string",
+      "name": "Name",
+      "validation": {
+        "required": true
+      }
+    },
+    "role": {
+      "dataType": "string",
+      "name": "Designation",
+      "validation": {
+        "required": true
+      }
+    },
+    "image": {
+      "dataType": "string",
+      "name": "Photo URL",
+      "description": "Provide a direct image URL (e.g. from Unsplash or an uploaded file)",
+      "validation": {
+        "required": true
+      }
+    },
+    "order": {
+      "dataType": "number",
+      "name": "Display Order",
+      "description": "Lower numbers appear first (1, 2, 3...)"
+    }
+  }
+}

@@ -1,13 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
+import TeamGallery from "./components/TeamGallery";
 
 const Scrollytelling = dynamic(() => import("./components/Scrollytelling"), { ssr: false });
 
 export default function Home() {
-  const [activeAccordion, setActiveAccordion] = useState<number | null>(null);
 
   return (
     <main className="min-h-screen bg-white selection:bg-[var(--color-brand-primary)] selection:text-white">
@@ -55,59 +54,7 @@ export default function Home() {
             <h3 className="text-5xl md:text-7xl font-serif text-[#111111] tracking-tight">Meet the Team</h3>
           </div>
 
-          <div className="flex flex-col md:flex-row w-full h-[70vh] gap-2 md:gap-4">
-            {[
-              {
-                name: "Sudha Reddy",
-                role: "Founder",
-                image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1233&q=80"
-              },
-              {
-                name: "Aisha Khan",
-                role: "Head of Policy",
-                image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=1233&q=80"
-              },
-              {
-                name: "Rohan Patel",
-                role: "Renewables Counsel",
-                image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=1233&q=80"
-              },
-              {
-                name: "Priya Desai",
-                role: "Dispute Resolution",
-                image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=1233&q=80"
-              },
-              {
-                name: "Vikram Singh",
-                role: "Regulatory Expert",
-                image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=1233&q=80"
-              }
-            ].map((member, i) => (
-              <div 
-                key={i} 
-                onClick={() => setActiveAccordion(activeAccordion === i ? null : i)}
-                className={`group relative h-full bg-center bg-cover bg-no-repeat transition-[flex,filter] duration-[800ms] ease-out overflow-hidden cursor-pointer rounded-2xl shadow-lg 
-                  flex-1 md:hover:flex-[7] md:grayscale md:hover:grayscale-0
-                  ${activeAccordion === i ? 'max-md:flex-[7] max-md:grayscale-0' : 'max-md:flex-1 max-md:grayscale'}
-                `}
-                style={{ backgroundImage: `url('${member.image}')` }}
-              >
-                {/* Gradient overlay for text readability */}
-                <div className={`absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-black via-black/50 to-transparent transition-opacity duration-700
-                  md:opacity-0 md:group-hover:opacity-100 ${activeAccordion === i ? 'max-md:opacity-100' : 'max-md:opacity-0'}
-                `}></div>
-                
-                {/* Text Content */}
-                <div className={`absolute bottom-8 left-8 right-8 transition-all duration-700 delay-150 flex flex-col
-                  md:opacity-0 md:translate-y-8 md:group-hover:opacity-100 md:group-hover:translate-y-0
-                  ${activeAccordion === i ? 'max-md:opacity-100 max-md:translate-y-0' : 'max-md:opacity-0 max-md:translate-y-8'}
-                `}>
-                  <h4 className="text-3xl md:text-5xl font-serif font-medium !text-white mb-2 truncate">{member.name}</h4>
-                  <p className="text-xs md:text-sm font-sans uppercase tracking-[0.2em] text-[#8FBC8F] truncate">{member.role}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+          <TeamGallery />
         </div>
       </section>
 
