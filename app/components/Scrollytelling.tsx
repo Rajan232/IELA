@@ -171,7 +171,7 @@ export default function Scrollytelling() {
 
       <div ref={containerRef} className="relative h-[400vh] w-full bg-white">
         <motion.div 
-          className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2 pointer-events-none"
+          className="fixed max-md:bottom-28 md:bottom-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2 pointer-events-none"
           style={{
             opacity: useTransform(smoothProgress, [0, 0.05, 0.1], [1, 1, 0])
           }}

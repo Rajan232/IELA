@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import TeamGallery from "./components/TeamGallery";
+import ContactForm from "./components/ContactForm";
 
 const Scrollytelling = dynamic(() => import("./components/Scrollytelling"), { ssr: false });
 
@@ -58,8 +59,30 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FOOTER SECTION - #contact */}
-      <footer id="contact" className="min-h-[70vh] bg-white flex flex-col items-center justify-center p-8 border-t border-gray-100 relative overflow-hidden z-10">
+      <section id="contact" className="py-32 bg-white px-4 md:px-8 border-t border-gray-200 relative z-10 overflow-hidden">
+        <div className="max-w-[1400px] mx-auto flex flex-col items-center">
+          <div className="text-center mb-16 relative z-20">
+            <h2 className="text-sm font-sans uppercase tracking-[0.3em] text-[var(--color-brand-primary)] mb-6">Connect</h2>
+            <h3 className="text-5xl md:text-7xl font-serif text-[var(--color-headings)] tracking-tight">Get in Touch</h3>
+          </div>
+          <div className="w-full relative z-20">
+            <ContactForm />
+          </div>
+        </div>
+        
+        {/* Architectural Background Lines */}
+        <div className="absolute inset-0 grid grid-cols-4 md:grid-cols-12 pointer-events-none opacity-[0.03] z-0">
+          {Array.from({ length: 12 }).map((_, i) => (
+            <div key={i} className="border-r border-black h-full hidden md:block"></div>
+          ))}
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="border-r border-black h-full block md:hidden"></div>
+          ))}
+        </div>
+      </section>
+
+      {/* FOOTER SECTION */}
+      <footer className="min-h-[40vh] bg-gray-50 flex flex-col items-center justify-center p-8 border-t border-gray-200 relative overflow-hidden z-10">
         
         {/* Architectural Background Lines */}
         <div className="absolute inset-0 grid grid-cols-4 md:grid-cols-12 pointer-events-none opacity-[0.03]">

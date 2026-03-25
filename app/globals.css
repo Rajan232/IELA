@@ -119,3 +119,22 @@ h1, h2, h3, h4, h5, h6, .font-serif {
     0%, 15% { transform: rotate(0); }
     100% { transform: rotate(360deg); }
 }
+
+.custom-phone-input {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+.custom-phone-input .PhoneInputCountry {
+  margin-right: 12px;
+}
+.custom-phone-input input {
+  flex: 1;
+  background: transparent;
+  outline: none;
+  border: none;
+  color: var(--color-foreground);
+}
+.custom-phone-input .PhoneInputCountrySelectArrow {
+  opacity: 0.5;
+}

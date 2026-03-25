@@ -20,8 +20,8 @@ export default function Navbar() {
 
   return (
     <div className="fixed top-8 w-full z-[100] pointer-events-none flex justify-center px-4 md:px-8">
-      {/* Logo */}
-      <div className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 pointer-events-auto">
+      {/* Logo - Pinned Top Left */}
+      <div className="absolute left-4 md:left-8 top-0 max-md:translate-y-0 md:top-1/2 md:-translate-y-1/2 pointer-events-auto">
         <Link href="/">
           <Image 
             src="/logo/logo.png" 
@@ -34,8 +34,9 @@ export default function Navbar() {
         </Link>
       </div>
 
+      {/* Nav - Center Desktop, Bottom Center Mobile */}
       <nav 
-        className="pointer-events-auto flex items-center bg-white p-2 rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.08)] gap-2"
+        className="pointer-events-auto flex items-center bg-white p-2 rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.08)] gap-2 max-md:fixed max-md:bottom-8 max-md:left-1/2 max-md:-translate-x-1/2 max-md:w-max z-[110]"
         onMouseLeave={() => setHoveredIndex(null)}
       >
         {navItems.map((item, index) => {
