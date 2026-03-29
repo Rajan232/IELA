@@ -90,10 +90,13 @@ function CommitteeSection({ title, collectionName }: { title: string, collection
                     <div 
                       key={`mobile-${member.id}`} 
                       onClick={() => setActiveAccordion(isActive ? null : member.id)}
-                      className={`group relative h-full bg-center bg-cover bg-no-repeat transition-[flex,filter] duration-[800ms] ease-out overflow-hidden cursor-pointer rounded-2xl shadow-lg 
+                      className={`group relative h-full bg-cover bg-no-repeat transition-[flex,filter] duration-[800ms] ease-out overflow-hidden cursor-pointer rounded-2xl shadow-lg 
                         ${isActive ? 'flex-[7] grayscale-0' : 'flex-1 grayscale'}
                       `}
-                      style={{ backgroundImage: `url('${member.image}')` }}
+                      style={{ 
+                        backgroundImage: `url('${member.image}')`,
+                        backgroundPosition: collectionName === 'advisory_committee' ? 'center -20px' : 'center'
+                      }}
                     >
                       <div className={`absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-black via-black/50 to-transparent transition-opacity duration-700
                         ${isActive ? 'opacity-100' : 'opacity-0'}
@@ -148,10 +151,13 @@ function CommitteeSection({ title, collectionName }: { title: string, collection
                         animate={{ opacity: 1, scale: 1, x: 0 }}
                         exit={{ opacity: 0, scale: 0.8, x: -60, filter: "blur(10px)" }}
                         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                        className={`group/card relative h-full bg-center bg-cover bg-no-repeat transition-[flex,filter] duration-[800ms] ease-out overflow-hidden cursor-pointer rounded-2xl shadow-lg 
+                        className={`group/card relative h-full bg-cover bg-no-repeat transition-[flex,filter] duration-[800ms] ease-out overflow-hidden cursor-pointer rounded-2xl shadow-lg 
                           ${isActive ? 'flex-[7] grayscale-0' : 'flex-1 grayscale hover:flex-[7] hover:grayscale-0'}
                         `}
-                        style={{ backgroundImage: `url('${member.image}')` }}
+                        style={{ 
+                          backgroundImage: `url('${member.image}')`,
+                          backgroundPosition: collectionName === 'advisory_committee' ? 'center -20px' : 'center'
+                        }}
                       >
                         <div className={`absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-black via-black/50 to-transparent transition-opacity duration-700 opacity-0 group-hover/card:opacity-100 ${isActive ? 'opacity-100' : ''}`}></div>
                         <div className={`absolute bottom-8 left-8 right-8 transition-all duration-700 delay-150 flex flex-col opacity-0 translate-y-8 group-hover/card:opacity-100 group-hover/card:translate-y-0 ${isActive ? 'opacity-100 translate-y-0' : ''}`}>
@@ -183,8 +189,8 @@ function CommitteeSection({ title, collectionName }: { title: string, collection
 export default function TeamGallery() {
   return (
     <div className="w-full flex flex-col pt-8">
-      <CommitteeSection title="Executive Committee" collectionName="team" />
       <CommitteeSection title="Advisory Committee" collectionName="advisory_committee" />
+      <CommitteeSection title="Executive Committee" collectionName="team" />
     </div>
   );
 }
