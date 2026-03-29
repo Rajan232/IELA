@@ -183,8 +183,8 @@ function CommitteeSection({ title, collectionName }: { title: string, collection
 export default function TeamGallery() {
   return (
     <div className="w-full flex flex-col pt-8">
-      <CommitteeSection title="Executive Committee" collectionName="team" />
       <CommitteeSection title="Advisory Committee" collectionName="advisory_committee" />
+      <CommitteeSection title="Executive Committee" collectionName="team" />
     </div>
   );
 }
