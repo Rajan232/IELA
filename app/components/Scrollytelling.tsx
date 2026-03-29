@@ -169,7 +169,7 @@ export default function Scrollytelling() {
         </div>
       )}
 
-      <div ref={containerRef} className="relative h-[400vh] w-full bg-white">
+      <div ref={containerRef} className="relative h-[400vh] w-full bg-white" style={{ position: "relative" }}>
         <motion.div 
           className="fixed max-md:bottom-28 md:bottom-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2 pointer-events-none"
           style={{
