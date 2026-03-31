@@ -21,7 +21,7 @@ export default function ContactForm() {
     setStatus("submitting");
     
     // Web3Forms Public Access Key
-    // Note: User must get this key directly from web3forms.com by entering rajna.pusalkar51@gmail.com
+    // Note: User must get this key directly from web3forms.com by entering energylawassociationindia@gmail.com
     const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_KEY;
     
     if (!accessKey) {
