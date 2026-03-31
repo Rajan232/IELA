@@ -38,3 +38,4 @@ jobs:
           channelId: live
         env:
           FIREBASE_CLI_EXPERIMENTS: webframeworks
+          NEXT_PUBLIC_WEB3FORMS_KEY: ${{ secrets.NEXT_PUBLIC_WEB3FORMS_KEY }}
