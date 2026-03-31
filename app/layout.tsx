@@ -15,6 +15,9 @@ const manrope = Manrope({
 export const metadata: Metadata = {
   title: "India Energy Law Association | Navigating the Future of Energy Law",
   description: "Empowering India's energy transition through legal excellence.",
+  icons: {
+    icon: "/favicon/faviconiela.png",
+  },
 };
 
 import Navbar from "./components/Navbar";
