@@ -35,8 +35,6 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-20">
-            {/* ObjectiveCard component is not defined in the provided context, assuming it's a placeholder or defined elsewhere */}
-            {/* For the purpose of this edit, I will assume ObjectiveCard is a valid component */}
             <ObjectiveCard num="01" title="High-Quality Research" desc="Promoting non-partisan research on electricity law, renewable energy, climate change, carbon markets, and energy regulation." />
             <ObjectiveCard num="02" title="Neutral Dialogues" desc="Facilitating crucial conversations among policymakers, regulators, industry stakeholders, financiers, and academia." />
             <ObjectiveCard num="03" title="Professional Capacity" desc="Building elite professional capacity via specialized training programs, workshops, and expert-led mentorship." />
