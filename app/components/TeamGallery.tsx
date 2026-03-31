@@ -102,8 +102,8 @@ function CommitteeSection({ title, collectionName }: { title: string, collection
                       <div className={`absolute bottom-8 left-8 right-8 transition-all duration-700 delay-150 flex flex-col
                         ${isActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
                       `}>
-                        <h4 className="text-3xl font-serif font-medium !text-white mb-2 truncate">{member.name}</h4>
-                        <p className="text-xs font-sans uppercase tracking-[0.2em] text-[#8FBC8F] truncate">{member.role}</p>
+                        <h4 className="text-3xl font-serif font-medium !text-white mb-2 break-words whitespace-normal">{member.name}</h4>
+                        <p className="text-xs font-sans uppercase tracking-[0.2em] text-[#8FBC8F] break-words whitespace-normal">{member.role}</p>
                       </div>
                     </div>
                   );
@@ -138,25 +138,21 @@ function CommitteeSection({ title, collectionName }: { title: string, collection
                     });
                   }
                   return visible.map((member) => {
-                    const isActive = activeAccordion === member.id;
                     return (
                       <motion.div 
                         layout
                         key={member.virtualKey}
-                        onClick={() => setActiveAccordion(isActive ? null : member.id)}
                         initial={{ opacity: 0, scale: 0.9, x: 60 }}
                         animate={{ opacity: 1, scale: 1, x: 0 }}
                         exit={{ opacity: 0, scale: 0.8, x: -60, filter: "blur(10px)" }}
                         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                        className={`group/card relative h-full bg-center bg-cover bg-no-repeat transition-[flex,filter] duration-[800ms] ease-out overflow-hidden cursor-pointer rounded-2xl shadow-lg 
-                          ${isActive ? 'flex-[7] grayscale-0' : 'flex-1 grayscale hover:flex-[7] hover:grayscale-0'}
-                        `}
+                        className="group/card relative h-full bg-center bg-cover bg-no-repeat transition-[flex,filter] duration-[800ms] ease-out overflow-hidden rounded-2xl shadow-lg flex-1 grayscale hover:flex-[7] hover:grayscale-0"
                         style={{ backgroundImage: `url('${member.image}')` }}
                       >
-                        <div className={`absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-black via-black/50 to-transparent transition-opacity duration-700 opacity-0 group-hover/card:opacity-100 ${isActive ? 'opacity-100' : ''}`}></div>
-                        <div className={`absolute bottom-8 left-8 right-8 transition-all duration-700 delay-150 flex flex-col opacity-0 translate-y-8 group-hover/card:opacity-100 group-hover/card:translate-y-0 ${isActive ? 'opacity-100 translate-y-0' : ''}`}>
-                          <h4 className="text-5xl font-serif font-medium !text-white mb-2 truncate">{member.name}</h4>
-                          <p className="text-sm font-sans uppercase tracking-[0.2em] text-[#8FBC8F] truncate">{member.role}</p>
+                        <div className="absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-black via-black/50 to-transparent transition-opacity duration-150 delay-0 group-hover/card:duration-700 opacity-0 group-hover/card:opacity-100"></div>
+                        <div className="absolute bottom-8 left-8 right-8 transition-all duration-150 delay-0 group-hover/card:duration-700 group-hover/card:delay-150 flex flex-col opacity-0 translate-y-8 group-hover/card:opacity-100 group-hover/card:translate-y-0">
+                          <h4 className="text-5xl font-serif font-medium !text-white mb-2 break-words whitespace-normal">{member.name}</h4>
+                          <p className="text-sm font-sans uppercase tracking-[0.2em] text-[#8FBC8F] break-words whitespace-normal">{member.role}</p>
                         </div>
                       </motion.div>
                     );
