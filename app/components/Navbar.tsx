@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 
 const navItems = [
-  { name: "Home", path: "/" },
+  { name: "Home", path: "#home" },
   { name: "About", path: "#about" },
   { name: "Team", path: "#team" },
   { name: "Contact", path: "#contact" },
@@ -14,9 +14,45 @@ const navItems = [
 
 export default function Navbar() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [scrolledIndex, setScrolledIndex] = useState<number>(0);
 
-  // Default the active tab to the first one when not hovering over anything
-  const activeIndex = hoveredIndex !== null ? hoveredIndex : 0;
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const intersecting = entries.filter((entry) => entry.isIntersecting);
+        if (intersecting.length > 0) {
+          // Find the one that takes up the most ratio on screen to define active
+          const primary = intersecting.reduce((prev, current) => 
+            (prev.intersectionRatio > current.intersectionRatio) ? prev : current
+          );
+          
+          const matchedIndex = navItems.findIndex(item => item.path === `#${primary.target.id}`);
+          if (matchedIndex !== -1) {
+            setScrolledIndex(matchedIndex);
+          }
+        }
+      },
+      { rootMargin: "-20% 0px -40% 0px", threshold: [0, 0.25, 0.5] }
+    );
+
+    // Give it a tiny delay on mount to ensure DOM is fully rendered before selecting IDs
+    const timer = setTimeout(() => {
+      navItems.forEach((item) => {
+        const el = document.getElementById(item.path.replace("#", ""));
+        if (el) observer.observe(el);
+      });
+    }, 500);
+
+    return () => {
+      clearTimeout(timer);
+      observer.disconnect();
+    };
+  }, []);
+
+  // Set the "pill" visualizer to exactly what we hover, or default to current scroll section if moving down the page
+  const activeIndex = hoveredIndex !== null ? hoveredIndex : scrolledIndex;
 
   return (
     <div className="fixed top-8 w-full z-[100] pointer-events-none flex justify-center px-4 md:px-8">
@@ -26,9 +62,9 @@ export default function Navbar() {
           <Image 
             src="/logo/logo.png" 
             alt="India Energy Law Association Logo" 
-            width={120} 
-            height={48} 
-            className="object-contain w-24 md:w-32 h-auto"
+            width={168} 
+            height={67} 
+            className="object-contain w-[134px] md:w-[180px] h-auto"
             unoptimized={true}
           />
         </Link>

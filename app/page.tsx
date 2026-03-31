@@ -10,7 +10,7 @@ const Scrollytelling = dynamic(() => import("./components/Scrollytelling"), { ss
 export default function Home() {
 
   return (
-    <main className="min-h-screen bg-white selection:bg-[var(--color-brand-primary)] selection:text-white">
+    <main id="home" className="min-h-screen bg-white selection:bg-[var(--color-brand-primary)] selection:text-white">
       {/* 
         This is the main landing page structure.
         The scrollytelling component takes up 400vh to drive the scroll animation.
