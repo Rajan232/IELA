@@ -19,35 +19,39 @@ export default function Navbar() {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const intersecting = entries.filter((entry) => entry.isIntersecting);
-        if (intersecting.length > 0) {
-          // Find the one that takes up the most ratio on screen to define active
-          const primary = intersecting.reduce((prev, current) => 
-            (prev.intersectionRatio > current.intersectionRatio) ? prev : current
-          );
-          
-          const matchedIndex = navItems.findIndex(item => item.path === `#${primary.target.id}`);
-          if (matchedIndex !== -1) {
-            setScrolledIndex(matchedIndex);
-          }
-        }
-      },
-      { rootMargin: "-20% 0px -40% 0px", threshold: [0, 0.25, 0.5] }
-    );
+    const updateActiveSection = () => {
+      // Get the top offset of each section relative to current scroll position.
+      // We pick the section whose top edge is closest to the top of the viewport
+      // without having scrolled completely past it.
+      const scrollY = window.scrollY;
+      const buffer = window.innerHeight * 0.3; // activate when within top 30% of viewport
 
-    // Give it a tiny delay on mount to ensure DOM is fully rendered before selecting IDs
-    const timer = setTimeout(() => {
-      navItems.forEach((item) => {
+      let bestIndex = 0;
+      let bestDistance = Infinity;
+
+      navItems.forEach((item, index) => {
         const el = document.getElementById(item.path.replace("#", ""));
-        if (el) observer.observe(el);
+        if (!el) return;
+        const top = el.getBoundingClientRect().top + scrollY;
+        const distance = Math.abs(scrollY - top + buffer);
+        // Only consider sections we've scrolled to (top >= scrollY - buffer)
+        if (top <= scrollY + buffer && distance < bestDistance) {
+          bestDistance = distance;
+          bestIndex = index;
+        }
       });
-    }, 500);
+
+      setScrolledIndex(bestIndex);
+    };
+
+    // Run once on mount after DOM is ready
+    const timer = setTimeout(updateActiveSection, 100);
+
+    window.addEventListener("scroll", updateActiveSection, { passive: true });
 
     return () => {
       clearTimeout(timer);
-      observer.disconnect();
+      window.removeEventListener("scroll", updateActiveSection);
     };
   }, []);
 
