@@ -15,6 +15,9 @@ const manrope = Manrope({
 export const metadata: Metadata = {
   title: "India Energy Law Association | Navigating the Future of Energy Law",
   description: "Empowering India's energy transition through legal excellence.",
+  icons: {
+    icon: "/favicon/faviconiela.png",
+  },
 };
 
 import Navbar from "./components/Navbar";
@@ -27,7 +30,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${newsreader.variable} ${manrope.variable} h-full antialiased`}
+      className={`${newsreader.variable} ${manrope.variable} h-full antialiased scroll-smooth`}
     >
       <body className="min-h-full flex flex-col">
         <Navbar />

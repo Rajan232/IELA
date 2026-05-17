@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 
 const navItems = [
-  { name: "Home", path: "/" },
+  { name: "Home", path: "#home" },
   { name: "About", path: "#about" },
   { name: "Team", path: "#team" },
   { name: "Contact", path: "#contact" },
@@ -14,9 +14,49 @@ const navItems = [
 
 export default function Navbar() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [scrolledIndex, setScrolledIndex] = useState<number>(0);
 
-  // Default the active tab to the first one when not hovering over anything
-  const activeIndex = hoveredIndex !== null ? hoveredIndex : 0;
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const updateActiveSection = () => {
+      // Get the top offset of each section relative to current scroll position.
+      // We pick the section whose top edge is closest to the top of the viewport
+      // without having scrolled completely past it.
+      const scrollY = window.scrollY;
+      const buffer = window.innerHeight * 0.3; // activate when within top 30% of viewport
+
+      let bestIndex = 0;
+      let bestDistance = Infinity;
+
+      navItems.forEach((item, index) => {
+        const el = document.getElementById(item.path.replace("#", ""));
+        if (!el) return;
+        const top = el.getBoundingClientRect().top + scrollY;
+        const distance = Math.abs(scrollY - top + buffer);
+        // Only consider sections we've scrolled to (top >= scrollY - buffer)
+        if (top <= scrollY + buffer && distance < bestDistance) {
+          bestDistance = distance;
+          bestIndex = index;
+        }
+      });
+
+      setScrolledIndex(bestIndex);
+    };
+
+    // Run once on mount after DOM is ready
+    const timer = setTimeout(updateActiveSection, 100);
+
+    window.addEventListener("scroll", updateActiveSection, { passive: true });
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("scroll", updateActiveSection);
+    };
+  }, []);
+
+  // Set the "pill" visualizer to exactly what we hover, or default to current scroll section if moving down the page
+  const activeIndex = hoveredIndex !== null ? hoveredIndex : scrolledIndex;
 
   return (
     <div className="fixed top-8 w-full z-[100] pointer-events-none flex justify-center px-4 md:px-8">
@@ -26,9 +66,9 @@ export default function Navbar() {
           <Image 
             src="/logo/logo.png" 
             alt="India Energy Law Association Logo" 
-            width={120} 
-            height={48} 
-            className="object-contain w-24 md:w-32 h-auto"
+            width={168} 
+            height={67} 
+            className="object-contain w-[134px] md:w-[180px] h-auto"
             unoptimized={true}
           />
         </Link>
