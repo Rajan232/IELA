@@ -181,7 +181,7 @@ export default function TeamGallery() {
     <div className="w-full flex flex-col pt-8">
 
       <CommitteeSection title="Advisory Committee" collectionName="advisory_committee" />
-      <CommitteeSection title="Steering Committee" collectionName="steering_committee" />
+      {/* <CommitteeSection title="Steering Committee" collectionName="steering_committee" /> */}
       <CommitteeSection title="Executive Committee" collectionName="team" />
 
     </div>
