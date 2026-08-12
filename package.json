@@ -8,7 +8,11 @@
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "export:firebase": "node scripts/export-firebase-data.mjs",
+    "d1:migrate": "npx wrangler d1 execute iela-db --remote --file=migrations/0001_create_team_members.sql",
+    "d1:seed": "npx wrangler d1 execute iela-db --remote --file=data/seed.sql",
+    "pages:deploy": "npx wrangler pages deploy out"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -16,7 +20,6 @@
     "@mui/icons-material": "^7.3.9",
     "@mui/material": "^7.3.9",
     "clsx": "^2.1.1",
-    "firebase": "^12.11.0",
     "framer-motion": "^12.38.0",
     "gsap": "^3.14.2",
     "lucide-react": "^1.0.1",
@@ -40,6 +43,7 @@
     "jest-environment-jsdom": "^30.3.0",
     "tailwindcss": "^4",
     "ts-node": "^10.9.2",
-    "typescript": "^5"
+    "typescript": "^5",
+    "wrangler": "^3.114.0"
   }
 }

@@ -1,0 +1,19 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "iela",
+	"compatibility_date": "2024-09-23",
+	"pages_build_output_dir": "./out",
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "iela-db",
+			"database_id": "9af23a44-f982-4410-b5bb-534fae07e602"
+		},
+		{
+			"binding": "iela_db",
+			"database_name": "iela-db",
+			"database_id": "9af23a44-f982-4410-b5bb-534fae07e602",
+			"remote": true
+		}
+	]
+}

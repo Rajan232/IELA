@@ -1,0 +1,49 @@
+{
+  "advisory_committee": [
+    {
+      "id": "adv-1",
+      "name": "Dr. Aruna Kumar",
+      "role": "Senior Energy Law Advisor & Former Regulatory Chair",
+      "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=800&auto=format&fit=crop",
+      "order": 1
+    },
+    {
+      "id": "adv-2",
+      "name": "Justice Vikramjit Sen",
+      "role": "Legal Counsel & Honorary Patron",
+      "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=800&auto=format&fit=crop",
+      "order": 2
+    },
+    {
+      "id": "adv-3",
+      "name": "Prof. Sunita Deshmukh",
+      "role": "Dean of Energy Policy & Sustainability",
+      "image": "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=800&auto=format&fit=crop",
+      "order": 3
+    }
+  ],
+  "steering_committee": [],
+  "team": [
+    {
+      "id": "exec-1",
+      "name": "Rohan Sharma",
+      "role": "President & Managing Director",
+      "image": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=800&auto=format&fit=crop",
+      "order": 1
+    },
+    {
+      "id": "exec-2",
+      "name": "Ananya Roy",
+      "role": "Vice President & Head of Regulatory Affairs",
+      "image": "https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=800&auto=format&fit=crop",
+      "order": 2
+    },
+    {
+      "id": "exec-3",
+      "name": "Kabir Mehta",
+      "role": "General Secretary & Policy Lead",
+      "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=800&auto=format&fit=crop",
+      "order": 3
+    }
+  ]
+}

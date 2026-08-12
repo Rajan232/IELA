@@ -1,18 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import { getCommitteeMembers, TeamMember } from "@/lib/db";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
-
-interface TeamMember {
-  id: string;
-  name: string;
-  role: string;
-  image: string;
-  order?: number;
-}
 
 function CommitteeSection({ title, collectionName }: { title: string, collectionName: string }) {
   const [activeAccordion, setActiveAccordion] = useState<string | null>(null);
@@ -24,24 +15,21 @@ function CommitteeSection({ title, collectionName }: { title: string, collection
   const VISIBLE_COUNT = 7;
 
   useEffect(() => {
-    try {
-      const q = query(collection(db, collectionName), orderBy("order", "asc"));
-      const unsubscribe = onSnapshot(q, (snapshot) => {
-        const fetched = snapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        })) as TeamMember[];
-        
-        setMembers(fetched);
-        setLoading(false);
-      }, (error) => {
-        console.error(`Firebase error fetching ${collectionName}:`, error);
-        setLoading(false);
-      });
-      return () => unsubscribe();
-    } catch (e) {
-      setLoading(false);
+    let mounted = true;
+    async function loadMembers() {
+      try {
+        const fetched = await getCommitteeMembers(collectionName);
+        if (mounted) {
+          setMembers(fetched);
+          setLoading(false);
+        }
+      } catch (e) {
+        console.error(`Error fetching ${collectionName}:`, e);
+        if (mounted) setLoading(false);
+      }
     }
+    loadMembers();
+    return () => { mounted = false; };
   }, [collectionName]);
 
   // As per requirements: Do not render title or accordion if exactly 0 members exist
