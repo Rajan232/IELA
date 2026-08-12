@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 
 interface TeamMember {
   id: string;
@@ -22,6 +22,8 @@ function CommitteeSection({ title, collectionName }: { title: string, collection
   // Desktop Carousel specific states
   const [startIndex, setStartIndex] = useState(0);
   const VISIBLE_COUNT = 7;
+  const lastClickRef = useRef(0);
+  const THROTTLE_MS = 350;
 
   useEffect(() => {
     try {
@@ -67,8 +69,21 @@ function CommitteeSection({ title, collectionName }: { title: string, collection
   const mobileRows = chunkMembers(members);
 
   // --- DESKTOP LOGIC ---
-  const nextSlide = () => setStartIndex(prev => (prev + 1) % members.length);
-  const prevSlide = () => setStartIndex(prev => (prev - 1 + members.length) % members.length);
+  const nextSlide = () => {
+    if (members.length === 0) return;
+    const now = Date.now();
+    if (now - lastClickRef.current < THROTTLE_MS) return;
+    lastClickRef.current = now;
+    setStartIndex(prev => (prev + 1) % members.length);
+  };
+
+  const prevSlide = () => {
+    if (members.length === 0) return;
+    const now = Date.now();
+    if (now - lastClickRef.current < THROTTLE_MS) return;
+    lastClickRef.current = now;
+    setStartIndex(prev => (prev - 1 + members.length) % members.length);
+  };
 
   return (
     <div className="flex flex-col w-full gap-6 md:gap-8 mb-16 md:mb-24 last:mb-0">
@@ -117,54 +132,52 @@ function CommitteeSection({ title, collectionName }: { title: string, collection
             {members.length > VISIBLE_COUNT && (
               <button 
                 onClick={prevSlide}
-                className="absolute -left-6 top-1/2 -translate-y-1/2 z-50 w-12 h-12 flex items-center justify-center rounded-full bg-black/40 backdrop-blur-xl border border-white/20 text-white opacity-0 group-hover:opacity-100 transition-all duration-500 hover:bg-[var(--color-brand-primary)] hover:scale-110 shadow-[0_8px_32px_rgba(0,0,0,0.2)]"
+                aria-label="Previous members"
+                className="absolute -left-6 top-1/2 -translate-y-1/2 z-50 w-12 h-12 flex items-center justify-center rounded-full bg-black/40 backdrop-blur-xl border border-white/20 text-white opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-[var(--color-brand-primary)] hover:scale-110 active:scale-95 shadow-[0_8px_32px_rgba(0,0,0,0.2)] cursor-pointer"
               >
                 <ChevronLeft className="w-6 h-6 ml-[-2px]" />
               </button>
             )}
 
             <div className="flex w-full h-full gap-4 overflow-hidden">
-              <AnimatePresence mode="popLayout" initial={false}>
-                {(() => {
-                  const visible = [];
-                  const renderCount = Math.min(members.length, VISIBLE_COUNT);
-                  for (let i = 0; i < renderCount; i++) {
-                    const absoluteIndex = startIndex + i;
-                    const arrayIndex = ((absoluteIndex % members.length) + members.length) % members.length;
-                    const member = members[arrayIndex];
-                    visible.push({
-                      ...member,
-                      virtualKey: `desktop-card-${member.id}-v${absoluteIndex}`
-                    });
-                  }
-                  return visible.map((member) => {
-                    return (
-                      <motion.div 
-                        layout
-                        key={member.virtualKey}
-                        initial={{ opacity: 0, scale: 0.9, x: 60 }}
-                        animate={{ opacity: 1, scale: 1, x: 0 }}
-                        exit={{ opacity: 0, scale: 0.8, x: -60, filter: "blur(10px)" }}
-                        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                        className="group/card relative h-full bg-center bg-cover bg-no-repeat transition-[flex,filter] duration-[800ms] ease-out overflow-hidden rounded-2xl shadow-lg flex-1 grayscale hover:flex-[7] hover:grayscale-0"
-                        style={{ backgroundImage: `url('${member.image}')` }}
-                      >
-                        <div className="absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-black via-black/50 to-transparent transition-opacity duration-150 delay-0 group-hover/card:duration-700 opacity-0 group-hover/card:opacity-100"></div>
-                        <div className="absolute bottom-8 left-8 right-8 transition-all duration-150 delay-0 group-hover/card:duration-700 group-hover/card:delay-150 flex flex-col opacity-0 translate-y-8 group-hover/card:opacity-100 group-hover/card:translate-y-0">
-                          <h4 className="text-5xl font-serif font-medium !text-white mb-2 break-words whitespace-normal">{member.name}</h4>
-                          <p className="text-sm font-sans uppercase tracking-[0.2em] text-[#8FBC8F] break-words whitespace-normal">{member.role}</p>
-                        </div>
-                      </motion.div>
-                    );
+              {(() => {
+                const renderCount = Math.min(members.length, VISIBLE_COUNT);
+                const visible = [];
+                for (let i = 0; i < renderCount; i++) {
+                  const absoluteIndex = startIndex + i;
+                  const arrayIndex = ((absoluteIndex % members.length) + members.length) % members.length;
+                  const member = members[arrayIndex];
+                  visible.push({
+                    member,
+                    cardKey: `desktop-card-${member.id}-${arrayIndex}`
                   });
-                })()}
-              </AnimatePresence>
+                }
+
+                return visible.map(({ member, cardKey }) => (
+                  <motion.div 
+                    layout
+                    key={cardKey}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                    className="group/card relative h-full bg-center bg-cover bg-no-repeat transition-[flex,filter] duration-500 ease-out overflow-hidden rounded-2xl shadow-lg flex-1 grayscale hover:flex-[7] hover:grayscale-0"
+                    style={{ backgroundImage: `url('${member.image}')` }}
+                  >
+                    <div className="absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-black via-black/50 to-transparent transition-opacity duration-150 delay-0 group-hover/card:duration-700 opacity-0 group-hover/card:opacity-100"></div>
+                    <div className="absolute bottom-8 left-8 right-8 transition-all duration-150 delay-0 group-hover/card:duration-700 group-hover/card:delay-150 flex flex-col opacity-0 translate-y-8 group-hover/card:opacity-100 group-hover/card:translate-y-0">
+                      <h4 className="text-5xl font-serif font-medium !text-white mb-2 break-words whitespace-normal">{member.name}</h4>
+                      <p className="text-sm font-sans uppercase tracking-[0.2em] text-[#8FBC8F] break-words whitespace-normal">{member.role}</p>
+                    </div>
+                  </motion.div>
+                ));
+              })()}
             </div>
 
             {members.length > VISIBLE_COUNT && (
               <button 
                 onClick={nextSlide}
-                className="absolute -right-6 top-1/2 -translate-y-1/2 z-50 w-12 h-12 flex items-center justify-center rounded-full bg-black/40 backdrop-blur-xl border border-white/20 text-white opacity-0 group-hover:opacity-100 transition-all duration-500 hover:bg-[var(--color-brand-primary)] hover:scale-110 shadow-[0_8px_32px_rgba(0,0,0,0.2)]"
+                aria-label="Next members"
+                className="absolute -right-6 top-1/2 -translate-y-1/2 z-50 w-12 h-12 flex items-center justify-center rounded-full bg-black/40 backdrop-blur-xl border border-white/20 text-white opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-[var(--color-brand-primary)] hover:scale-110 active:scale-95 shadow-[0_8px_32px_rgba(0,0,0,0.2)] cursor-pointer"
               >
                 <ChevronRight className="w-6 h-6 mr-[-2px]" />
               </button>
