@@ -268,7 +268,7 @@ export default function Scrollytelling() {
                 whileTap={{ scale: 0.95 }}
               >
                 <a 
-                  href="#take-the-lead"
+                  href="#contact"
                   className="group relative inline-flex items-center justify-center overflow-hidden rounded-full p-4 px-12 bg-[var(--color-brand-primary)] text-white font-sans uppercase tracking-widest text-lg md:text-xl shadow-[0_4px_30px_rgba(34,139,34,0.3)] transition-colors duration-300 hover:bg-[var(--color-brand-tertiary)]"
                 >
                   <span className="relative z-10 transition-transform duration-300 group-hover:-translate-y-1">Take the Lead</span>
