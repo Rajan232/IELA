@@ -30,6 +30,12 @@
       "dataType": "number",
       "name": "Display Order",
       "description": "Lower numbers appear first (1, 2, 3...)"
+    },
+    "linkedin": {
+      "dataType": "string",
+      "name": "LinkedIn URL",
+      "description": "Optional LinkedIn profile URL (e.g. https://linkedin.com/in/username)",
+      "url": true
     }
   }
 }

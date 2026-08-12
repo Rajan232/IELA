@@ -20,15 +20,8 @@
     },
     "image": {
       "dataType": "string",
-      "name": "Photo URL / Image",
-      "description": "Provide a direct image URL or upload to Firebase Storage folder (young_ela_professionals)",
-      "storage": {
-        "mediaType": "image",
-        "storagePath": "images/young_ela_professionals",
-        "acceptedFiles": [
-          "image/*"
-        ]
-      },
+      "name": "Photo URL",
+      "description": "Provide a direct image URL (e.g. from Unsplash or an uploaded file)",
       "validation": {
         "required": true
       }
@@ -37,6 +30,12 @@
       "dataType": "number",
       "name": "Display Order",
       "description": "Lower numbers appear first (1, 2, 3...)"
+    },
+    "linkedin": {
+      "dataType": "string",
+      "name": "LinkedIn URL",
+      "description": "Optional LinkedIn profile URL (e.g. https://linkedin.com/in/username)",
+      "url": true
     }
   }
 }

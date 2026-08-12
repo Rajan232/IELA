@@ -6,12 +6,21 @@ import { db } from "@/lib/firebase";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
 
+function LinkedInIcon({ className = "w-4 h-4" }: { className?: string }) {
+  return (
+    <svg className={className} fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.25V10.9H6.46M7.86 6.78a1.62 1.62 0 1 0 0 3.24 1.62 1.62 0 0 0 0-3.24z" />
+    </svg>
+  );
+}
+
 interface TeamMember {
   id: string;
   name: string;
   role: string;
   image: string;
   order?: number;
+  linkedin?: string;
 }
 
 function CommitteeSection({ title, collectionName }: { title: string, collectionName: string }) {
@@ -118,7 +127,20 @@ function CommitteeSection({ title, collectionName }: { title: string, collection
                         ${isActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
                       `}>
                         <h4 className="text-3xl font-serif font-medium !text-white mb-2 break-words whitespace-normal">{member.name}</h4>
-                        <p className="text-xs font-sans uppercase tracking-[0.2em] text-[#8FBC8F] break-words whitespace-normal">{member.role}</p>
+                        <p className="text-xs font-sans uppercase tracking-[0.2em] text-[#8FBC8F] break-words whitespace-normal mb-3">{member.role}</p>
+
+                        {member.linkedin && member.linkedin.trim() !== "" && (
+                          <a
+                            href={member.linkedin}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            aria-label={`${member.name}'s LinkedIn Profile`}
+                            className="w-8 h-8 rounded-full bg-white/20 active:bg-[#0A66C2] text-white flex items-center justify-center transition-all duration-300 backdrop-blur-md border border-white/30 shadow-md"
+                          >
+                            <LinkedInIcon className="w-4 h-4 fill-current" />
+                          </a>
+                        )}
                       </div>
                     </div>
                   );
@@ -164,9 +186,22 @@ function CommitteeSection({ title, collectionName }: { title: string, collection
                     style={{ backgroundImage: `url('${member.image}')` }}
                   >
                     <div className="absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-black via-black/50 to-transparent transition-opacity duration-150 delay-0 group-hover/card:duration-700 opacity-0 group-hover/card:opacity-100"></div>
-                    <div className="absolute bottom-8 left-8 right-8 transition-all duration-150 delay-0 group-hover/card:duration-700 group-hover/card:delay-150 flex flex-col opacity-0 translate-y-8 group-hover/card:opacity-100 group-hover/card:translate-y-0">
+                    <div className="absolute bottom-8 left-8 right-8 transition-all duration-150 delay-0 group-hover/card:duration-700 group-hover/card:delay-150 flex flex-col opacity-0 translate-y-8 group-hover/card:opacity-100 group-hover/card:translate-y-0 items-start">
                       <h4 className="text-5xl font-serif font-medium !text-white mb-2 break-words whitespace-normal">{member.name}</h4>
-                      <p className="text-sm font-sans uppercase tracking-[0.2em] text-[#8FBC8F] break-words whitespace-normal">{member.role}</p>
+                      <p className="text-sm font-sans uppercase tracking-[0.2em] text-[#8FBC8F] break-words whitespace-normal mb-4">{member.role}</p>
+
+                      {member.linkedin && member.linkedin.trim() !== "" && (
+                        <a
+                          href={member.linkedin}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          aria-label={`${member.name}'s LinkedIn Profile`}
+                          className="w-9 h-9 rounded-full bg-white/20 hover:bg-[#0A66C2] text-white flex items-center justify-center transition-all duration-300 backdrop-blur-md border border-white/30 shadow-md hover:scale-110 active:scale-95 group/icon"
+                        >
+                          <LinkedInIcon className="w-4 h-4 fill-current transition-transform duration-300 group-hover/icon:scale-110" />
+                        </a>
+                      )}
                     </div>
                   </motion.div>
                 ));
