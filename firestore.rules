@@ -1,0 +1,22 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow public read access to all team & committee collections, restrict write to authenticated users
+    match /team/{document=**} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    match /advisory_committee/{document=**} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    match /steering_committee/{document=**} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    match /young_ela_professionals/{document=**} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+  }
+}
