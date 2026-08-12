@@ -1,0 +1,42 @@
+{
+  "id": "young_ela_professionals",
+  "path": "young_ela_professionals",
+  "name": "Young ELA Professionals",
+  "singularName": "Young ELA Professional",
+  "properties": {
+    "name": {
+      "dataType": "string",
+      "name": "Name",
+      "validation": {
+        "required": true
+      }
+    },
+    "role": {
+      "dataType": "string",
+      "name": "Designation",
+      "validation": {
+        "required": true
+      }
+    },
+    "image": {
+      "dataType": "string",
+      "name": "Photo URL / Image",
+      "description": "Provide a direct image URL or upload to Firebase Storage folder (young_ela_professionals)",
+      "storage": {
+        "mediaType": "image",
+        "storagePath": "images/young_ela_professionals",
+        "acceptedFiles": [
+          "image/*"
+        ]
+      },
+      "validation": {
+        "required": true
+      }
+    },
+    "order": {
+      "dataType": "number",
+      "name": "Display Order",
+      "description": "Lower numbers appear first (1, 2, 3...)"
+    }
+  }
+}
