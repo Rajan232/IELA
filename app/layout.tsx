@@ -50,6 +50,7 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
       { url: "/favicon/icon-48x48.png", sizes: "48x48", type: "image/png" },
       { url: "/favicon/icon-96x96.png", sizes: "96x96", type: "image/png" },
       { url: "/favicon/icon-192x192.png", sizes: "192x192", type: "image/png" },
@@ -107,6 +108,7 @@ const jsonLd = {
       "alternateName": ["IELA", "India ELA"],
       "url": "https://india-ela.org",
       "logo": "https://india-ela.org/logo/logo.png",
+      "image": "https://india-ela.org/favicon/icon-512x512.png",
       "description":
         "Empowering India's energy transition through legal excellence, high-quality research, neutral dialogue, and evidence-based policy.",
     },
@@ -135,6 +137,13 @@ export default function RootLayout({
       className={`${newsreader.variable} ${manrope.variable} h-full antialiased scroll-smooth`}
     >
       <head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="icon" type="image/png" sizes="48x48" href="/favicon/icon-48x48.png" />
+        <link rel="icon" type="image/png" sizes="96x96" href="/favicon/icon-96x96.png" />
+        <link rel="icon" type="image/png" sizes="192x192" href="/favicon/icon-192x192.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
+        <link rel="shortcut icon" href="/favicon.ico" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

@@ -115,7 +115,7 @@ function CommitteeSection({ title, collectionName }: { title: string, collection
                       key={`mobile-${member.id}`} 
                       onClick={() => setActiveAccordion(isActive ? null : member.id)}
                       className={`group relative h-full bg-center bg-cover bg-no-repeat transition-[flex,filter] duration-[800ms] ease-out overflow-hidden cursor-pointer rounded-2xl shadow-lg 
-                        ${isActive ? 'flex-[7] grayscale-0' : 'flex-1 grayscale'}
+                        ${isActive ? 'flex-[3] grayscale-0' : 'flex-1 grayscale'}
                       `}
                       style={{ backgroundImage: `url('${member.image}')` }}
                     >
@@ -126,7 +126,7 @@ function CommitteeSection({ title, collectionName }: { title: string, collection
                       <div className={`absolute bottom-8 left-8 right-8 transition-all duration-700 delay-150 flex flex-col
                         ${isActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
                       `}>
-                        <h4 className="text-3xl font-serif font-medium !text-white mb-2 break-words whitespace-normal">{member.name}</h4>
+                        <h4 className="text-2xl sm:text-3xl font-serif font-medium !text-white mb-2 break-words whitespace-normal">{member.name}</h4>
                         <p className="text-xs font-sans uppercase tracking-[0.2em] text-[#8FBC8F] break-words whitespace-normal mb-3">{member.role}</p>
 
                         {member.linkedin && member.linkedin.trim() !== "" && (
@@ -182,12 +182,12 @@ function CommitteeSection({ title, collectionName }: { title: string, collection
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                    className="group/card relative h-full bg-center bg-cover bg-no-repeat transition-[flex,filter] duration-500 ease-out overflow-hidden rounded-2xl shadow-lg flex-1 grayscale hover:flex-[7] hover:grayscale-0"
+                    className="group/card relative h-full bg-center bg-cover bg-no-repeat transition-[flex,filter] duration-500 ease-out overflow-hidden rounded-2xl shadow-lg flex-1 grayscale hover:flex-[3] hover:grayscale-0"
                     style={{ backgroundImage: `url('${member.image}')` }}
                   >
                     <div className="absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-black via-black/50 to-transparent transition-opacity duration-150 delay-0 group-hover/card:duration-700 opacity-0 group-hover/card:opacity-100"></div>
                     <div className="absolute bottom-8 left-8 right-8 transition-all duration-150 delay-0 group-hover/card:duration-700 group-hover/card:delay-150 flex flex-col opacity-0 translate-y-8 group-hover/card:opacity-100 group-hover/card:translate-y-0 items-start">
-                      <h4 className="text-5xl font-serif font-medium !text-white mb-2 break-words whitespace-normal">{member.name}</h4>
+                      <h4 className="text-3xl lg:text-4xl font-serif font-medium !text-white mb-2 break-words whitespace-normal">{member.name}</h4>
                       <p className="text-sm font-sans uppercase tracking-[0.2em] text-[#8FBC8F] break-words whitespace-normal mb-4">{member.role}</p>
 
                       {member.linkedin && member.linkedin.trim() !== "" && (
@@ -229,7 +229,6 @@ export default function TeamGallery() {
     <div className="w-full flex flex-col pt-8">
 
       <CommitteeSection title="Advisory Committee" collectionName="advisory_committee" />
-      {/* <CommitteeSection title="Steering Committee" collectionName="steering_committee" /> */}
       <CommitteeSection title="Executive Committee" collectionName="team" />
       <CommitteeSection title="Young ELA Professionals" collectionName="young_ela_professionals" />
 
