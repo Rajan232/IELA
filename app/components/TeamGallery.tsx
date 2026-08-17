@@ -216,7 +216,7 @@ export default function TeamGallery() {
 
       <CommitteeSection title="Advisory Committee" collectionName="advisory_committee" />
       <CommitteeSection title="Executive Committee" collectionName="team" />
-      <CommitteeSection title="Young ELA Professionals" collectionName="young_ela_professionals" />
+      <CommitteeSection title="ELA Young Professionals" collectionName="young_ela_professionals" />
 
     </div>
   );
