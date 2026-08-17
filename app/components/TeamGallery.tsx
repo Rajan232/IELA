@@ -104,30 +104,30 @@ function CommitteeSection({ title, collectionName }: { title: string, collection
       ) : (
         <div className="flex flex-col w-full gap-4">
           
-          {/* 1. MOBILE VIEW (Stacked Accordion) */}
-          <div className="md:hidden flex flex-col w-full gap-2 px-2">
+          {/* 1. MOBILE VIEW (Horizontal Accordion) */}
+          <div className="md:hidden flex flex-col w-full gap-4 px-2">
             {mobileRows.map((row, rowIndex) => (
-              <div key={rowIndex} className="flex flex-col w-full h-[70vh] gap-2">
+              <div key={rowIndex} className="flex flex-row w-full h-[50vh] sm:h-[60vh] gap-2 overflow-hidden">
                 {row.map((member) => {
                   const isActive = activeAccordion === member.id;
                   return (
                     <div 
                       key={`mobile-${member.id}`} 
                       onClick={() => setActiveAccordion(isActive ? null : member.id)}
-                      className={`group relative h-full bg-center bg-cover bg-no-repeat transition-[flex,filter] duration-[800ms] ease-out overflow-hidden cursor-pointer rounded-2xl shadow-lg 
+                      className={`group relative h-full bg-center bg-cover bg-no-repeat transition-[flex,filter] duration-500 ease-out overflow-hidden cursor-pointer rounded-2xl shadow-lg 
                         ${isActive ? 'flex-[3] grayscale-0' : 'flex-1 grayscale'}
                       `}
                       style={{ backgroundImage: `url('${member.image}')` }}
                     >
-                      <div className={`absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-black via-black/50 to-transparent transition-opacity duration-700
+                      <div className={`absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-black via-black/60 to-transparent transition-opacity duration-500
                         ${isActive ? 'opacity-100' : 'opacity-0'}
                       `}></div>
                       
-                      <div className={`absolute bottom-8 left-8 right-8 transition-all duration-700 delay-150 flex flex-col
-                        ${isActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
+                      <div className={`absolute bottom-6 left-4 right-4 transition-all duration-500 flex flex-col items-start
+                        ${isActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6 pointer-events-none'}
                       `}>
-                        <h4 className="text-2xl sm:text-3xl font-serif font-medium !text-white mb-2 break-words whitespace-normal">{member.name}</h4>
-                        <p className="text-xs font-sans uppercase tracking-[0.2em] text-[#8FBC8F] break-words whitespace-normal mb-3">{member.role}</p>
+                        <h4 className="text-xl sm:text-2xl font-serif font-medium !text-white mb-1 break-words whitespace-normal">{member.name}</h4>
+                        <p className="text-[10px] sm:text-xs font-sans uppercase tracking-[0.15em] text-[#8FBC8F] break-words whitespace-normal mb-3">{member.role}</p>
 
                         {member.linkedin && member.linkedin.trim() !== "" && (
                           <a
