@@ -6,6 +6,23 @@
       "**/.*",
       "**/node_modules/**"
     ],
+    "redirects": [
+      {
+        "source": "/about",
+        "destination": "/#about",
+        "type": 301
+      },
+      {
+        "source": "/team",
+        "destination": "/#team",
+        "type": 301
+      },
+      {
+        "source": "/contact",
+        "destination": "/#contact",
+        "type": 301
+      }
+    ],
     "frameworksBackend": {
       "region": "us-central1"
     }
