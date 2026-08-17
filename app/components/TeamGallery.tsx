@@ -104,47 +104,33 @@ function CommitteeSection({ title, collectionName }: { title: string, collection
       ) : (
         <div className="flex flex-col w-full gap-4">
           
-          {/* 1. MOBILE VIEW (Horizontal Accordion) */}
-          <div className="md:hidden flex flex-col w-full gap-4 px-2">
-            {mobileRows.map((row, rowIndex) => (
-              <div key={rowIndex} className="flex flex-row w-full h-[50vh] sm:h-[60vh] gap-2 overflow-hidden">
-                {row.map((member) => {
-                  const isActive = activeAccordion === member.id;
-                  return (
-                    <div 
-                      key={`mobile-${member.id}`} 
-                      onClick={() => setActiveAccordion(isActive ? null : member.id)}
-                      className={`group relative h-full bg-center bg-cover bg-no-repeat transition-[flex,filter] duration-500 ease-out overflow-hidden cursor-pointer rounded-2xl shadow-lg 
-                        ${isActive ? 'flex-[3] grayscale-0' : 'flex-1 grayscale'}
-                      `}
-                      style={{ backgroundImage: `url('${member.image}')` }}
-                    >
-                      <div className={`absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-black via-black/60 to-transparent transition-opacity duration-500
-                        ${isActive ? 'opacity-100' : 'opacity-0'}
-                      `}></div>
-                      
-                      <div className={`absolute bottom-6 left-4 right-4 transition-all duration-500 flex flex-col items-start
-                        ${isActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6 pointer-events-none'}
-                      `}>
-                        <h4 className="text-xl sm:text-2xl font-serif font-medium !text-white mb-1 break-words whitespace-normal">{member.name}</h4>
-                        <p className="text-[10px] sm:text-xs font-sans uppercase tracking-[0.15em] text-[#8FBC8F] break-words whitespace-normal mb-3">{member.role}</p>
+          {/* 1. MOBILE VIEW (Horizontal Swipe Container - All Cards Open) */}
+          <div className="md:hidden flex w-full overflow-x-auto gap-4 px-4 py-2 snap-x snap-mandatory [ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            {members.map((member) => (
+              <div 
+                key={`mobile-${member.id}`} 
+                className="relative shrink-0 w-[78vw] sm:w-[320px] h-[52vh] min-h-[380px] snap-center bg-center bg-cover bg-no-repeat overflow-hidden rounded-2xl shadow-lg"
+                style={{ backgroundImage: `url('${member.image}')` }}
+              >
+                <div className="absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-black via-black/60 to-transparent"></div>
+                
+                <div className="absolute bottom-6 left-5 right-5 flex flex-col items-start">
+                  <h4 className="text-2xl sm:text-3xl font-serif font-medium !text-white mb-1 break-words whitespace-normal">{member.name}</h4>
+                  <p className="text-xs font-sans uppercase tracking-[0.18em] text-[#8FBC8F] break-words whitespace-normal mb-3">{member.role}</p>
 
-                        {member.linkedin && member.linkedin.trim() !== "" && (
-                          <a
-                            href={member.linkedin}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            onClick={(e) => e.stopPropagation()}
-                            aria-label={`${member.name}'s LinkedIn Profile`}
-                            className="w-8 h-8 rounded-full bg-white/20 active:bg-[#0A66C2] text-white flex items-center justify-center transition-all duration-300 backdrop-blur-md border border-white/30 shadow-md"
-                          >
-                            <LinkedInIcon className="w-4 h-4 fill-current" />
-                          </a>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })}
+                  {member.linkedin && member.linkedin.trim() !== "" && (
+                    <a
+                      href={member.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`${member.name}'s LinkedIn Profile`}
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/20 active:bg-[#0A66C2] text-white text-sm font-sans font-semibold transition-all duration-300 backdrop-blur-md border border-white/30 shadow-md"
+                    >
+                      <LinkedInIcon className="w-4 h-4 fill-current" />
+                      <span>LinkedIn</span>
+                    </a>
+                  )}
+                </div>
               </div>
             ))}
           </div>
@@ -197,9 +183,9 @@ function CommitteeSection({ title, collectionName }: { title: string, collection
                           rel="noopener noreferrer"
                           onClick={(e) => e.stopPropagation()}
                           aria-label={`${member.name}'s LinkedIn Profile`}
-                          className="w-9 h-9 rounded-full bg-white/20 hover:bg-[#0A66C2] text-white flex items-center justify-center transition-all duration-300 backdrop-blur-md border border-white/30 shadow-md hover:scale-110 active:scale-95 group/icon"
+                          className="w-11 h-11 rounded-full bg-white/20 hover:bg-[#0A66C2] text-white flex items-center justify-center transition-all duration-300 backdrop-blur-md border border-white/30 shadow-md hover:scale-110 active:scale-95 group/icon"
                         >
-                          <LinkedInIcon className="w-4 h-4 fill-current transition-transform duration-300 group-hover/icon:scale-110" />
+                          <LinkedInIcon className="w-5 h-5 fill-current transition-transform duration-300 group-hover/icon:scale-110" />
                         </a>
                       )}
                     </div>
